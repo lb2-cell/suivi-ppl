@@ -5,47 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Suivi PPL – 6 semaines</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--tx:#111827;--mu:#6b7280;--ac:#2563eb;--ok:#16a34a;--bd:#e5e7eb;--ac2:#dbeafe;
+:root{--bg:#f3f4f8;--card:#fff;--tx:#0f172a;--mu:#64748b;--ac:#4f46e5;--ok:#16a34a;--bd:#e2e8f0;--ac2:#eef2ff;--sh:0 1px 2px rgba(15,23,42,.05),0 6px 20px rgba(15,23,42,.06);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--tx:#f3f4f6;--mu:#9ca3af;--ac:#60a5fa;--ok:#4ade80;--bd:#2d323c;--ac2:#1e3a5f;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--tx:#f3f4f6;--mu:#9ca3af;--ac:#60a5fa;--ok:#4ade80;--bd:#2d323c;--ac2:#1e3a5f;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.4 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
-main{max-width:560px;margin:0 auto;padding:12px 14px 60px}
-h1{font-size:22px;margin:8px 0 2px}
-.sub{color:var(--mu);font-size:15px;margin-bottom:10px}
-.bar{height:12px;background:var(--bd);border-radius:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
-.row{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px}
-.chip{flex:0 0 auto;padding:12px 16px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font-size:17px;font-weight:600}
-.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 12px}
-.seg .chip{text-align:center;padding:14px 4px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0d12;--card:#161a22;--tx:#f1f5f9;--mu:#94a3b8;--ac:#818cf8;--ok:#4ade80;--bd:#272d39;--ac2:#1e2540;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0d12;--card:#161a22;--tx:#f1f5f9;--mu:#94a3b8;--ac:#818cf8;--ok:#4ade80;--bd:#272d39;--ac2:#1e2540;--sh:0 1px 2px rgba(0,0,0,.4);color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.4 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;--sc:#f97316}
+body[data-s="B"]{--sc:#3b82f6}body[data-s="C"]{--sc:#10b981}body[data-s="X"]{--sc:#8b5cf6}
+main{max-width:560px;margin:0 auto;padding:12px 14px 70px}
+.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:22px;padding:18px 18px 16px;box-shadow:0 10px 28px rgba(79,70,229,.35)}
+.hl{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.8;font-weight:600}
+h1{font-size:30px;margin:2px 0 4px;letter-spacing:-.02em}
+.sub{font-size:16px;opacity:.95;margin-bottom:12px;font-weight:500}
+.bar{height:10px;background:rgba(255,255,255,.28);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:#fff;width:0;transition:width .4s;border-radius:6px}
+.days{margin-top:12px;font-size:14px;opacity:.85}
+.row{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 6px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:11px 16px;border-radius:14px;border:2px solid transparent;background:var(--card);color:var(--tx);font:600 16px inherit;box-shadow:var(--sh);transition:transform .1s}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--ac);color:#fff}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 14px}
+.seg .chip{text-align:center;padding:14px 2px;font-size:16px}
+.seg .chip.on{background:var(--sc)}
+.card{background:var(--card);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+.sh{font-size:15px;color:var(--mu);margin:0 0 6px;padding-left:10px;border-left:5px solid var(--sc)}
+.sh b{color:var(--tx);font-size:19px}
 .ex{display:flex;align-items:center;gap:12px}
-.ex.done .nm{text-decoration:line-through;color:var(--mu)}
-.nm{font-size:19px;font-weight:600}
-.rp{color:var(--ac);font-weight:700;font-size:16px}
+.ex.done .nm{color:var(--mu);text-decoration:line-through}
+.nm{font-size:18px;font-weight:650}
 .grow{flex:1;min-width:0}
-.chk{flex:0 0 52px;height:52px;border-radius:14px;border:3px solid var(--bd);background:transparent;color:#fff;font-size:28px}
-.done .chk{background:var(--ok);border-color:var(--ok)}
-input[type=number],textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx)}
-input[type=number]{width:110px;margin-top:6px}
+.chk{flex:0 0 54px;height:54px;border-radius:50%;border:3px solid var(--bd);background:transparent;color:#fff;font-size:28px;font-weight:700;transition:all .15s}
+.done .chk{background:var(--ok);border-color:var(--ok);transform:scale(1.04)}
+input[type=number],input[type=text],textarea{width:100%;font:inherit;padding:12px;border-radius:14px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);outline:none}
+input:focus,textarea:focus{border-color:var(--ac)}
 textarea{min-height:90px;resize:vertical}
-label{display:block;font-weight:600;margin-bottom:6px}
-.note{background:var(--ac2);border-radius:12px;padding:10px 12px;font-size:16px;margin-bottom:12px}
-.tips{color:var(--mu);font-size:15px;margin:2px 0 0}
-.stat{display:flex;justify-content:space-between;font-size:16px;color:var(--mu);margin-top:10px}
-.stat b{color:var(--tx)}
+label{display:block;font-weight:700;margin-bottom:8px;font-size:17px}
+.note{background:var(--ac2);color:var(--ac);border-radius:14px;padding:11px 14px;font-size:15px;font-weight:600;margin-bottom:10px}
+.tips{color:var(--mu);font-size:14px;margin:8px 0 0}
+.stat{display:flex;justify-content:space-between;font-size:15px;color:var(--mu);margin-top:12px}
+.stat b{color:var(--tx);font-size:17px}
 button{cursor:pointer}
-.ghost{background:none;border:none;color:var(--mu);font-size:14px;text-decoration:underline;margin-top:20px}
+.ghost{background:none;border:none;color:var(--mu);font-size:14px;text-decoration:underline;margin-top:16px;display:block;margin-inline:auto}
+.mini{display:flex;gap:6px;align-items:center;margin-top:8px}.mini input{width:60px;margin:0;padding:10px 4px;text-align:center;font-weight:600}.mini input[type=text]{width:86px}.mini input[placeholder=kg]{width:72px;margin-left:6px}.mini span{color:var(--mu);font-weight:700}
+.del{background:none;border:none;color:#dc2626;font-size:13px;text-decoration:underline;padding:0 0 0 6px}
 </style>
 </head>
 <body>
 <main>
-<h1>Suivi PPL</h1>
-<div class="sub" id="sub"></div><div class="sub" style="margin-top:-6px">Lun Push · Mer Pull · Ven Legs · Sam Bonus</div>
-<div class="bar"><i id="pg"></i></div>
+<header class="hero"><div class="hl">Programme 6 semaines</div><h1>Suivi PPL</h1><div class="sub" id="sub"></div><div class="bar"><i id="pg"></i></div><div class="days">Lun Push · Mer Pull · Ven Legs · Sam Bonus</div></header>
 <div class="row" id="weeks"></div>
 <div id="note"></div>
 <div class="seg" id="seg"></div>
@@ -81,11 +89,13 @@ var KEYS=["A","B","C","X"],LAB={A:"Push",B:"Pull",C:"Legs",X:"Bonus"};
 var D={},wk=1,se="A";
 try{D=JSON.parse(localStorage.getItem("ppl6")||"{}")}catch(e){D={}}
 function save(){try{localStorage.setItem("ppl6",JSON.stringify(D))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
 function $(i){return document.getElementById(i)}
 function g(k,d){return D[k]===undefined?d:D[k]}
 function set(k,v){D[k]=v;save()}
 function prog(){var t=0,d=0;for(var w=1;w<=6;w++)for(var i=0;i<3;i++){var s=KEYS[i];S[s].e.forEach(function(x,j){t++;if(g(w+"-"+s+"-"+j+"-d",0))d++})}return Math.round(d/t*100)}
 function render(){
+document.body.dataset.s=se;
 $("sub").textContent="Semaine "+wk+" sur 6 · "+prog()+"% du programme fait";
 $("pg").style.width=prog()+"%";
 $("weeks").innerHTML="";
@@ -93,12 +103,17 @@ for(var w=1;w<=6;w++){(function(w){var b=document.createElement("button");b.clas
 $("note").innerHTML=wk<=2?'<div class="note">Semaines 1-2 : fais seulement 2 séries par exercice et reprends en douceur.</div>':wk==6?'<div class="note">Dernière semaine : vise le haut des répétitions et note ton poids final.</div>':"";
 $("seg").innerHTML="";
 KEYS.forEach(function(s){var b=document.createElement("button");b.className="chip"+(s==se?" on":"");b.textContent=LAB[s];b.onclick=function(){se=s;render()};$("seg").appendChild(b)});
-var h='<div class="card"><div class="sub" style="margin:0 0 8px"><b>'+S[se].n+"</b> · "+(se=="X"?"facultative, 4 tours, 60 s de repos":"45 min")+"</div>";
-S[se].e.forEach(function(x,j){
-var k=wk+"-"+se+"-"+j,dn=g(k+"-d",0);
-h+='<div class="ex'+(dn?" done":"")+'" style="padding:10px 0;border-top:'+(j?"1px solid var(--bd)":"0")+'"><div class="grow"><div class="nm">'+x[0]+'</div><div class="rp">'+x[1]+'</div>'+(se=="X"&&j>2?"":'<input type="number" inputmode="decimal" placeholder="kg" data-k="'+k+'-w" value="'+g(k+"-w","")+'">')+'</div><button class="chk" data-k="'+k+'-d" aria-label="Fait">'+(dn?"✓":"")+"</button></div>"});
+var h='<div class="card"><div class="sh"><b>'+S[se].n+"</b> · "+(se=="X"?"facultative, 4 tours, 60 s de repos":"45 min")+"</div>";
+var cu=g("cu-"+se,[]),nb=S[se].e.length;
+var L=S[se].e.concat(cu.map(function(n){return [n,"3×10",1]}));
+L.forEach(function(x,j){
+var k=wk+"-"+se+"-"+j,dn=g(k+"-d",0),m=x[1].match(/^(\d+)×(.+)$/),ds=m?m[1]:"1",dr=m?m[2]:x[1];
+h+='<div class="ex'+(dn?" done":"")+'" style="padding:10px 0;border-top:'+(j?"1px solid var(--bd)":"0")+'"><div class="grow"><div class="nm">'+esc(x[0])+(x[2]?' <button class="del" data-i="'+(j-nb)+'">supprimer</button>':'')+'</div><div class="mini"><input type="number" inputmode="numeric" aria-label="Séries" data-k="'+k+'-s" value="'+esc(g(k+"-s",ds))+'"><span>×</span><input type="text" aria-label="Répétitions" data-k="'+k+'-r" value="'+esc(g(k+"-r",dr))+'"><input type="number" inputmode="decimal" placeholder="kg" data-k="'+k+'-w" value="'+esc(g(k+"-w",""))+'"></div></div><button class="chk" data-k="'+k+'-d" aria-label="Fait">'+(dn?"✓":"")+"</button></div>"});
+h+='<div style="padding-top:12px;border-top:1px solid var(--bd);margin-top:6px"><input type="text" id="nex" placeholder="Nouvel exercice (ex : Dips)" style="margin-bottom:8px"><button class="chip on" id="addx" style="width:100%">+ Ajouter un exercice</button><p class="tips">Séries × répétitions et kg sont modifiables. Un exercice ajouté reste sur toutes les semaines.</p></div>';
 h+='</div><div class="card"><label for="sc">Commentaire de la séance</label><textarea id="sc" data-k="'+wk+"-"+se+'-c" placeholder="Sensations, charges, douleurs, énergie…">'+g(wk+"-"+se+"-c","")+"</textarea></div>";
 $("sess").innerHTML=h;
+$("addx").onclick=function(){var v=$("nex").value.trim();if(!v)return;var c=g("cu-"+se,[]).slice();c.push(v);set("cu-"+se,c);render()};
+$("sess").querySelectorAll(".del").forEach(function(el){el.onclick=function(){if(confirm("Supprimer cet exercice ?")){var c=g("cu-"+se,[]).slice();c.splice(parseInt(el.dataset.i,10),1);set("cu-"+se,c);render()}}});
 $("sess").querySelectorAll("input,textarea").forEach(function(el){el.oninput=function(){set(el.dataset.k,el.value)}});
 $("sess").querySelectorAll(".chk").forEach(function(el){el.onclick=function(){set(el.dataset.k,g(el.dataset.k,0)?0:1);render()}});
 $("cardio").innerHTML="";
