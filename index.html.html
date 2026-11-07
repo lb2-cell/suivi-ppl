@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suivi PPL – 6 semaines</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#111827;--mu:#6b7280;--ac:#2563eb;--ok:#16a34a;--bd:#e5e7eb;--ac2:#dbeafe;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#1a1d24;--tx:#f3f4f6;--mu:#9ca3af;--ac:#60a5fa;--ok:#4ade80;--bd:#2d323c;--ac2:#1e3a5f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--tx:#f3f4f6;--mu:#9ca3af;--ac:#60a5fa;--ok:#4ade80;--bd:#2d323c;--ac2:#1e3a5f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.4 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:12px 14px 60px}
+h1{font-size:22px;margin:8px 0 2px}
+.sub{color:var(--mu);font-size:15px;margin-bottom:10px}
+.bar{height:12px;background:var(--bd);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.row{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px}
+.chip{flex:0 0 auto;padding:12px 16px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font-size:17px;font-weight:600}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 12px}
+.seg .chip{text-align:center;padding:14px 4px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+.ex{display:flex;align-items:center;gap:12px}
+.ex.done .nm{text-decoration:line-through;color:var(--mu)}
+.nm{font-size:19px;font-weight:600}
+.rp{color:var(--ac);font-weight:700;font-size:16px}
+.grow{flex:1;min-width:0}
+.chk{flex:0 0 52px;height:52px;border-radius:14px;border:3px solid var(--bd);background:transparent;color:#fff;font-size:28px}
+.done .chk{background:var(--ok);border-color:var(--ok)}
+input[type=number],textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);color:var(--tx)}
+input[type=number]{width:110px;margin-top:6px}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-weight:600;margin-bottom:6px}
+.note{background:var(--ac2);border-radius:12px;padding:10px 12px;font-size:16px;margin-bottom:12px}
+.tips{color:var(--mu);font-size:15px;margin:2px 0 0}
+.stat{display:flex;justify-content:space-between;font-size:16px;color:var(--mu);margin-top:10px}
+.stat b{color:var(--tx)}
+button{cursor:pointer}
+.ghost{background:none;border:none;color:var(--mu);font-size:14px;text-decoration:underline;margin-top:20px}
+</style>
+</head>
+<body>
+<main>
+<h1>Suivi PPL</h1>
+<div class="sub" id="sub"></div><div class="sub" style="margin-top:-6px">Lun Push · Mer Pull · Ven Legs · Sam Bonus</div>
+<div class="bar"><i id="pg"></i></div>
+<div class="row" id="weeks"></div>
+<div id="note"></div>
+<div class="seg" id="seg"></div>
+<div id="sess"></div>
+<div class="card">
+<label>Cardio de la semaine (vélo / course)</label>
+<div class="row" id="cardio" style="padding:0"></div>
+<p class="tips">Allure facile : tu dois pouvoir parler. 40 à 60 min.</p>
+</div>
+<div class="card">
+<label for="bw">Poids du matin (kg)</label>
+<input type="number" id="bw" inputmode="decimal" step="0.1" placeholder="ex : 111.4">
+<div class="stat"><span>Départ : <b>112 kg</b></span><span>Objectif : <b>&lt; 100 kg</b></span></div>
+<div class="stat"><span>Dernier poids : <b id="last">–</b></span><span>Perdu : <b id="lost">–</b></span></div>
+<p class="tips">Pèse-toi à jeun, 1 fois par semaine au même jour.</p>
+</div>
+<div class="card">
+<label for="wc">Commentaire de la semaine</label>
+<textarea id="wc" placeholder="Fatigue, sommeil, alimentation, ressenti…"></textarea>
+</div>
+<div class="card">
+<label>Rappels</label>
+<p class="tips">Échauffement 5 min avant chaque séance.<br>Repos 60 à 90 s entre les séries.<br>Garde 1 à 2 répétitions en réserve.<br>Quand tu atteins le haut des répétitions partout, ajoute 2 à 5 % de charge.<br>Protéines : 1,6 à 2 g/kg. Déficit : 300 à 500 kcal/jour.</p>
+</div>
+<button class="ghost" id="reset">Tout effacer</button>
+</main>
+<script>
+var S={A:{n:"Push · pecs, épaules, triceps",e:[["Développé couché haltères","3×8-10"],["Développé incliné machine","3×10"],["Développé épaules machine","3×10"],["Élévations latérales","3×15"],["Extension triceps poulie","3×12"],["Pompes (finisher)","2×max"]]},
+B:{n:"Pull · dos, biceps",e:[["Tirage vertical","3×10"],["Rowing poulie assise","3×10-12"],["Rowing haltère un bras","3×10/bras"],["Face pull","3×15"],["Curl haltères","3×12"],["Crunch poulie","3×15"]]},
+C:{n:"Legs · jambes, fessiers",e:[["Presse à cuisses","3×10-12"],["Soulevé de terre roumain","3×10"],["Fentes marchées","3×10/jambe"],["Leg curl","3×12"],["Mollets debout","3×15"],["Gainage","3×40 s"]]},
+X:{n:"Bonus",e:[["Goblet squat","4×15"],["Pompes","4×10-15"],["Rowing haltère","4×12/bras"],["Montées de genoux","4×30 s"],["Gainage","4×30 s"],["Cardio facile","10 min"]]}};
+var KEYS=["A","B","C","X"],LAB={A:"Push",B:"Pull",C:"Legs",X:"Bonus"};
+var D={},wk=1,se="A";
+try{D=JSON.parse(localStorage.getItem("ppl6")||"{}")}catch(e){D={}}
+function save(){try{localStorage.setItem("ppl6",JSON.stringify(D))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function g(k,d){return D[k]===undefined?d:D[k]}
+function set(k,v){D[k]=v;save()}
+function prog(){var t=0,d=0;for(var w=1;w<=6;w++)for(var i=0;i<3;i++){var s=KEYS[i];S[s].e.forEach(function(x,j){t++;if(g(w+"-"+s+"-"+j+"-d",0))d++})}return Math.round(d/t*100)}
+function render(){
+$("sub").textContent="Semaine "+wk+" sur 6 · "+prog()+"% du programme fait";
+$("pg").style.width=prog()+"%";
+$("weeks").innerHTML="";
+for(var w=1;w<=6;w++){(function(w){var b=document.createElement("button");b.className="chip"+(w==wk?" on":"");b.textContent="S"+w;b.onclick=function(){wk=w;render()};$("weeks").appendChild(b)})(w)}
+$("note").innerHTML=wk<=2?'<div class="note">Semaines 1-2 : fais seulement 2 séries par exercice et reprends en douceur.</div>':wk==6?'<div class="note">Dernière semaine : vise le haut des répétitions et note ton poids final.</div>':"";
+$("seg").innerHTML="";
+KEYS.forEach(function(s){var b=document.createElement("button");b.className="chip"+(s==se?" on":"");b.textContent=LAB[s];b.onclick=function(){se=s;render()};$("seg").appendChild(b)});
+var h='<div class="card"><div class="sub" style="margin:0 0 8px"><b>'+S[se].n+"</b> · "+(se=="X"?"facultative, 4 tours, 60 s de repos":"45 min")+"</div>";
+S[se].e.forEach(function(x,j){
+var k=wk+"-"+se+"-"+j,dn=g(k+"-d",0);
+h+='<div class="ex'+(dn?" done":"")+'" style="padding:10px 0;border-top:'+(j?"1px solid var(--bd)":"0")+'"><div class="grow"><div class="nm">'+x[0]+'</div><div class="rp">'+x[1]+'</div>'+(se=="X"&&j>2?"":'<input type="number" inputmode="decimal" placeholder="kg" data-k="'+k+'-w" value="'+g(k+"-w","")+'">')+'</div><button class="chk" data-k="'+k+'-d" aria-label="Fait">'+(dn?"✓":"")+"</button></div>"});
+h+='</div><div class="card"><label for="sc">Commentaire de la séance</label><textarea id="sc" data-k="'+wk+"-"+se+'-c" placeholder="Sensations, charges, douleurs, énergie…">'+g(wk+"-"+se+"-c","")+"</textarea></div>";
+$("sess").innerHTML=h;
+$("sess").querySelectorAll("input,textarea").forEach(function(el){el.oninput=function(){set(el.dataset.k,el.value)}});
+$("sess").querySelectorAll(".chk").forEach(function(el){el.onclick=function(){set(el.dataset.k,g(el.dataset.k,0)?0:1);render()}});
+$("cardio").innerHTML="";
+for(var c=1;c<=3;c++){(function(c){var b=document.createElement("button");b.className="chip"+(g(wk+"-cd"+c,0)?" on":"");b.textContent=(g(wk+"-cd"+c,0)?"✓ ":"")+"Sortie "+c;b.onclick=function(){set(wk+"-cd"+c,g(wk+"-cd"+c,0)?0:1);render()};$("cardio").appendChild(b)})(c)}
+$("bw").value=g(wk+"-bw","");$("wc").value=g(wk+"-wc","");
+var lw=null;for(var w=6;w>=1;w--){if(g(w+"-bw","")!==""){lw=parseFloat(g(w+"-bw",""));break}}
+$("last").textContent=lw?lw+" kg":"–";$("lost").textContent=lw?(112-lw).toFixed(1)+" kg":"–";
+}
+$("bw").oninput=function(){set(wk+"-bw",$("bw").value);render2()};
+$("wc").oninput=function(){set(wk+"-wc",$("wc").value)};
+function render2(){var lw=null;for(var w=6;w>=1;w--){if(g(w+"-bw","")!==""){lw=parseFloat(g(w+"-bw",""));break}}
+$("last").textContent=lw?lw+" kg":"–";$("lost").textContent=lw?(112-lw).toFixed(1)+" kg":"–"}
+$("reset").onclick=function(){if(confirm("Effacer toutes tes données ?")){D={};save();render()}};
+render();
+</script>
+</body>
+</html>
