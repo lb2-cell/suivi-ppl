@@ -49,6 +49,11 @@ button{cursor:pointer}
 .ghost{background:none;border:none;color:var(--mu);font-size:14px;text-decoration:underline;margin-top:16px;display:block;margin-inline:auto}
 .mini{display:flex;gap:6px;align-items:center;margin-top:8px}.mini input{width:60px;margin:0;padding:10px 4px;text-align:center;font-weight:600}.mini input[type=text]{width:86px}.mini input[placeholder=kg]{width:72px;margin-left:6px}.mini span{color:var(--mu);font-weight:700}
 .del{background:none;border:none;color:#dc2626;font-size:13px;text-decoration:underline;padding:0 0 0 6px}
+.ex2{padding:12px 0}.ex2~.ex2{border-top:1px solid var(--bd)}.ex2.done .nm{color:var(--mu);text-decoration:line-through}
+.set{display:flex;align-items:center;gap:6px;margin-top:8px}.sn{width:20px;font-weight:700;color:var(--mu)}.set span{color:var(--mu);font-weight:600;font-size:15px}.sn{font-size:17px}
+.set input{margin:0;padding:10px 4px;text-align:center;font-weight:600}.set input[type=number]{width:72px}.set input[type=text]{width:78px}
+.chk.sm{flex:0 0 46px;height:46px;font-size:24px;margin-left:auto}.set.ok input{opacity:.55}
+.sbtn{display:flex;gap:8px;margin-top:10px}.sbtn .chip{padding:8px 14px;font-size:15px;box-shadow:none;background:var(--ac2);color:var(--ac)}
 </style>
 </head>
 <body>
@@ -93,7 +98,10 @@ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").re
 function $(i){return document.getElementById(i)}
 function g(k,d){return D[k]===undefined?d:D[k]}
 function set(k,v){D[k]=v;save()}
-function prog(){var t=0,d=0;for(var w=1;w<=6;w++)for(var i=0;i<3;i++){var s=KEYS[i];S[s].e.forEach(function(x,j){t++;if(g(w+"-"+s+"-"+j+"-d",0))d++})}return Math.round(d/t*100)}
+function pr(x){var m=x[1].match(/^(\d+)×(.+)$/);return m?[parseInt(m[1],10),m[2]]:[1,x[1]]}
+function ns(k,x){return parseInt(g(k+"-n",pr(x)[0]),10)}
+function exDone(k,x){var n=ns(k,x);for(var i=0;i<n;i++)if(!g(k+"-c"+i,0))return false;return true}
+function prog(){var t=0,d=0;for(var w=1;w<=6;w++)for(var i=0;i<3;i++){var s=KEYS[i];S[s].e.forEach(function(x,j){t++;if(exDone(w+"-"+s+"-"+j,x))d++})}return Math.round(d/t*100)}
 function render(){
 document.body.dataset.s=se;
 $("sub").textContent="Semaine "+wk+" sur 6 · "+prog()+"% du programme fait";
@@ -107,14 +115,19 @@ var h='<div class="card"><div class="sh"><b>'+S[se].n+"</b> · "+(se=="X"?"facul
 var cu=g("cu-"+se,[]),nb=S[se].e.length;
 var L=S[se].e.concat(cu.map(function(n){return [n,"3×10",1]}));
 L.forEach(function(x,j){
-var k=wk+"-"+se+"-"+j,dn=g(k+"-d",0),m=x[1].match(/^(\d+)×(.+)$/),ds=m?m[1]:"1",dr=m?m[2]:x[1];
-h+='<div class="ex'+(dn?" done":"")+'" style="padding:10px 0;border-top:'+(j?"1px solid var(--bd)":"0")+'"><div class="grow"><div class="nm">'+esc(x[0])+(x[2]?' <button class="del" data-i="'+(j-nb)+'">supprimer</button>':'')+'</div><div class="mini"><input type="number" inputmode="numeric" aria-label="Séries" data-k="'+k+'-s" value="'+esc(g(k+"-s",ds))+'"><span>×</span><input type="text" aria-label="Répétitions" data-k="'+k+'-r" value="'+esc(g(k+"-r",dr))+'"><input type="number" inputmode="decimal" placeholder="kg" data-k="'+k+'-w" value="'+esc(g(k+"-w",""))+'"></div></div><button class="chk" data-k="'+k+'-d" aria-label="Fait">'+(dn?"✓":"")+"</button></div>"});
-h+='<div style="padding-top:12px;border-top:1px solid var(--bd);margin-top:6px"><input type="text" id="nex" placeholder="Nouvel exercice (ex : Dips)" style="margin-bottom:8px"><button class="chip on" id="addx" style="width:100%">+ Ajouter un exercice</button><p class="tips">Séries × répétitions et kg sont modifiables. Un exercice ajouté reste sur toutes les semaines.</p></div>';
+var k=wk+"-"+se+"-"+j,p=pr(x),n=ns(k,x),dn=exDone(k,x);
+h+='<div class="ex2'+(dn?" done":"")+'"><div class="nm">'+esc(x[0])+(x[2]?' <button class="del" data-i="'+(j-nb)+'">supprimer</button>':'')+'</div>';
+for(var i=0;i<n;i++){var cd=g(k+"-c"+i,0);
+h+='<div class="set'+(cd?" ok":"")+'"><span class="sn">'+(i+1)+'</span><input type="number" inputmode="decimal" placeholder="kg" aria-label="Poids" data-k="'+k+'-w'+i+'" value="'+esc(g(k+"-w"+i,""))+'"><span>kg ×</span><input type="text" aria-label="Répétitions" data-k="'+k+'-r'+i+'" value="'+esc(g(k+"-r"+i,p[1]))+'"><button class="chk sm" data-k="'+k+'-c'+i+'" aria-label="Série faite">'+(cd?"✓":"")+'</button></div>'}
+h+='<div class="sbtn"><button class="chip addset" data-k="'+k+'" data-n="'+n+'">+ Série</button><button class="chip rmset" data-k="'+k+'" data-n="'+n+'">− Série</button></div></div>'});
+h+='<div style="padding-top:12px;border-top:1px solid var(--bd);margin-top:6px"><input type="text" id="nex" placeholder="Nouvel exercice (ex : Dips)" style="margin-bottom:8px"><button class="chip on" id="addx" style="width:100%">+ Ajouter un exercice</button><p class="tips">Ajoute des séries avec + Série et note le poids de chacune. Un exercice ajouté reste sur toutes les semaines.</p></div>';
 h+='</div><div class="card"><label for="sc">Commentaire de la séance</label><textarea id="sc" data-k="'+wk+"-"+se+'-c" placeholder="Sensations, charges, douleurs, énergie…">'+g(wk+"-"+se+"-c","")+"</textarea></div>";
 $("sess").innerHTML=h;
 $("addx").onclick=function(){var v=$("nex").value.trim();if(!v)return;var c=g("cu-"+se,[]).slice();c.push(v);set("cu-"+se,c);render()};
 $("sess").querySelectorAll(".del").forEach(function(el){el.onclick=function(){if(confirm("Supprimer cet exercice ?")){var c=g("cu-"+se,[]).slice();c.splice(parseInt(el.dataset.i,10),1);set("cu-"+se,c);render()}}});
 $("sess").querySelectorAll("input,textarea").forEach(function(el){el.oninput=function(){set(el.dataset.k,el.value)}});
+$("sess").querySelectorAll(".addset").forEach(function(el){el.onclick=function(){var k=el.dataset.k,n=parseInt(el.dataset.n,10);set(k+"-n",n+1);set(k+"-w"+n,g(k+"-w"+(n-1),""));set(k+"-r"+n,g(k+"-r"+(n-1),""));render()}});
+$("sess").querySelectorAll(".rmset").forEach(function(el){el.onclick=function(){var n=parseInt(el.dataset.n,10);if(n>1){set(el.dataset.k+"-n",n-1);render()}}});
 $("sess").querySelectorAll(".chk").forEach(function(el){el.onclick=function(){set(el.dataset.k,g(el.dataset.k,0)?0:1);render()}});
 $("cardio").innerHTML="";
 for(var c=1;c<=3;c++){(function(c){var b=document.createElement("button");b.className="chip"+(g(wk+"-cd"+c,0)?" on":"");b.textContent=(g(wk+"-cd"+c,0)?"✓ ":"")+"Sortie "+c;b.onclick=function(){set(wk+"-cd"+c,g(wk+"-cd"+c,0)?0:1);render()};$("cardio").appendChild(b)})(c)}
